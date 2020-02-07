@@ -9,5 +9,7 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "valimate": "^2.3.0"
+  }
 }
