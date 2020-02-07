@@ -1,0 +1,35 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* .wrapper > * {
+  padding: 5px;
+} */
+
+.page_body {
+  flex-grow: 1;
+  display: flex;
+}
+
+.filter_column {
+  background-color: #fccf03;
+  flex: 2;
+  padding: 5px;
+}
+
+.list_column {
+  flex: 8;
+  padding: 5px;
+}
+
+.favourites_column {
+  background: #fccf03;
+  flex: 2;
+  padding: 5px;
+}
+
+.title {
+  text-align: center;
+}
