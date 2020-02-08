@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "sqlite3": "^4.1.1",
     "valimate": "^2.3.0"
   }
 }
