@@ -1,0 +1,10 @@
+sqlite3 banks.db
+sqlite> create table banks (id primary key, name, link, facebook, linkedin, description, size);
+sqlite> insert into banks values (001, "Deutsche Bank", "https://www.db.com/company/index.htm", "https://www.facebook.com/DeutscheBank/", "https://www.linkedin.com/company/deutsche-bank/", "This is a description of Deutsche Bank", 87597);
+sqlite> insert into banks values (002, "HSBC", "https://www.hsbc.co.uk/", "https://www.facebook.com/HSBCUK/", "https://www.linkedin.com/company/hsbc/", "This is a description of HSBC", 235217);
+sqlite> create table jobs (bank_id, job_id, name, company, location, salary, description, deadline, foreign key (bank_id) references banks(id), primary key (job_id));
+sqlite> insert into jobs values (001, 001, "deutsche test job", "Deutsche Bank", "Frankfurt", 30000, "Description of deutsche test job", "10/03/2020");
+sqlite> insert into jobs values (001, 002, "deutsche test job 2", "Deutsche Bank", "Frankfurt", 50000, "Description of deutsche test job 2", "10/03/2020");
+sqlite> insert into jobs values (002, 003, "hsbc test job", "HSBC", "London", 25000, "Description of hsbc test job", "10/03/2020");
+sqlite> insert into jobs values (002, 004, "hsbc test job 2", "HSBC", "London", 45000, "Description of hsbc test job 2", "10/03/2020");
+sqlite> pragma foreign_keys = on;
