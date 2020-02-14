@@ -13,6 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "polka": "^0.5.2",
+    "q-io": "^1.13.6",
+    "sqlite-async": "^1.0.12",
     "sqlite3": "^4.1.1",
     "valimate": "^2.3.0"
   }

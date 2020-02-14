@@ -15,11 +15,21 @@
 let port = 8080;
 let root = "./public"
 
+const sqlite3 = require('sqlite3').verbose();
+
+let db = new sqlite3.Database('./database/banks.db', sqlite3.OPEN_READWRITE, (err) => {
+  if (err) {
+    console.error(err.message);
+  }
+  console.log('Connected to the bank database.');
+});
+
 // Load the library modules, and define the global constants and variables.
 // Load the promises version of fs, so that async/await can be used.
 // See http://en.wikipedia.org/wiki/List_of_HTTP_status_codes.
 // The file types supported are set up in the defineTypes function.
 // The paths variable is a cache of url paths in the site, to check case.
+'use strict';
 let http = require("http");
 let fs = require("fs").promises;
 let OK = 200, NotFound = 404, BadType = 415, Error = 500;
@@ -48,16 +58,13 @@ async function start() {
 }
 
 // Serve a request by delivering a file.
-async function handle(request, response) {
-    let url = request.url;
-    if (url.endsWith("/")) url = url + "index.html";
-    let ok = await checkPath(url);
-    if (! ok) return fail(response, NotFound, "URL not found (check case)");
-    let type = findType(url);
-    if (type == null) return fail(response, BadType, "File type not supported");
-    let file = root + url;
-    let content = await fs.readFile(file);
-    deliver(response, type, content);
+ function handle(request, response) {
+    //find url and print
+    var url = request.url.toLowerCase();
+    console.log("url=", url)
+
+    if (url.startsWith("/bank.html")) getBank(url, response);
+    else getFile(url,response);
 }
 
 // Check if a path is in or can be added to the set of site paths, in order
@@ -86,8 +93,11 @@ async function addContents(folder) {
 
 // Find the content type to respond with, or undefined.
 function findType(url) {
+
+
     let dot = url.lastIndexOf(".");
     let extension = url.substring(dot + 1);
+    extension = extension.split(/\#|\?/g)[0];
     return types[extension];
 }
 
@@ -95,7 +105,7 @@ function findType(url) {
 function deliver(response, type, content) {
     let typeHeader = { "Content-Type": type };
     response.writeHead(OK, typeHeader);
-    response.write(content);
+    response.write(String(content));
     response.end();
 }
 
@@ -107,6 +117,54 @@ function fail(response, code, text) {
     response.end();
 }
 
+  async function getBank(url, response) {
+
+  var content = await fs.readFile("./templates/bank.html", "utf8");
+
+
+    getData(content, url, response);
+
+
+}
+
+
+ async function getData(text, url, response){
+
+  var parts = url.split("=");
+  var id = parts[1];
+  var statement = "select * from banks where id=?";
+  var obj = await db.get(statement, id);
+  console.log(obj);
+
+    prepare(text, obj, response);
+
+
+
+  }
+
+
+ function prepare(text, data, response){
+
+  var parts = text.split("$");
+  var page = parts[0] + data.name + parts[1] + data.name + parts[2];
+  console.log(page);
+  deliver(response, "text/html", page)
+
+}
+
+async function getFile(url, response) {
+
+  if (url.endsWith("/")) url = url + "index.html";
+  var ok = await checkPath(url);
+  if (! ok) return fail(response, NotFound, "URL not found (check case)");
+  var type = findType(url);
+  if (type == null) return fail(response, BadType, "File type not supported");
+  var file = root + url;
+  var content = await fs.readFile(file);
+  deliver(response, type, content);
+
+}
+
 // The most common standard file extensions are supported, and html is
 // delivered as "application/xhtml+xml".  Some common non-standard file
 // extensions are explicitly excluded.  This table is defined using a function
@@ -115,7 +173,7 @@ function fail(response, code, text) {
 // complete list, install the mime module and adapt the list it provides.
 function defineTypes() {
     let types = {
-        html : "application/xhtml+xml",
+        html : "text/html",
         css  : "text/css",
         js   : "application/javascript",
         mjs  : "application/javascript", // for ES6 modules
