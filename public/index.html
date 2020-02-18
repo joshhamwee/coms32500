@@ -1,35 +1,85 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Index</title>
-    <link rel="stylesheet" type="text/css" href="style/index.css" />
-  </head>
-  <body>
-    <header class="title">
-      <h1>Title of Site</h1>
-    </header>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.js"
+      integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+      crossorigin="anonymous"
+    ></script>
 
-    <div class="container">
-      <h2>Bank List</h2>
-      <ul class="responsive-table">
-        <li class="table-header">
-          <div class="col col-1">BANK</div>
-          <div class="col col-2">Location</div>
-        </li>
-        <li class="table-row">
-          <div class="col col-1" data-label="Job Id">
-            <a href="bank.html?id=1">Deutsche Bank</a>
-          </div>
-          <div class="col col-2" data-label="Customer Name">John Doe</div>
-        </li>
-        <li class="table-row">
-          <div class="col col-1" data-label="Job Id">
-            <a href="bank.html?id=2">HSBC</a>
-          </div>
-          <div class="col col-2" data-label="Customer Name">Jennifer Smith</div>
-        </li>
-      </ul>
-    </div>
+    <script
+      src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+      integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+      crossorigin="anonymous"
+    ></script>
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/2.11.0/tabulator.min.css"
+      rel="stylesheet"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/2.11.0/tabulator.min.js"
+    ></script>
+  </head>
+
+  <body>
+    <h1>Bank Table</h1>
+    <div id="example-table"></div>
+
+    <script type="text/javascript">
+      $(function() {
+        //create Tabulator on DOM element with id "example-table"
+        $("#example-table").tabulator({
+          //height: "320px",
+          fitColumns: true,
+          columns: [
+            { title: "Name", field: "name", sorter: "string", width: 150 },
+            {
+              title: "Location",
+              field: "Location",
+              sorter: "string",
+              align: "center"
+            },
+            {
+              title: "Quality of Life",
+              field: "qol",
+              sorter: "number",
+              sortable: true,
+              formatter: "progress"
+            },
+            {
+              title: "Starting Salary",
+              field: "salary",
+              sorter: "number",
+              align: "center"
+            }
+          ],
+          rowClick: function(e, id, data, row) {
+            var url = "bank.html?id=" + id;
+            window.location.href = url;
+          }
+        });
+        //define some sample data
+        var tabledata = [
+          {
+            id: 1,
+            name: "Deutsche",
+            Location: "London",
+            qol: "50",
+            salary: "35000"
+          },
+          {
+            id: 2,
+            name: "HSBC",
+            Location: "London",
+            qol: "75",
+            salary: "52000"
+          }
+        ];
+        //load sample data into the table
+        $("#example-table").tabulator("setData", tabledata);
+      });
+    </script>
   </body>
 </html>

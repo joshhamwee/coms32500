@@ -15,7 +15,7 @@
 let port = 8080;
 let root = "./public";
 
-const sqlite3 = require("sqlite3").verbose();
+const sqlite3 = require("sqlite-async").verbose();
 
 let db = new sqlite3.Database(
   "./database/banks.db",
@@ -133,13 +133,10 @@ async function getBank(url, response) {
 async function getData(text, url, response) {
   var parts = url.split("=");
   var id = parts[1];
-  var statement = "SELECT * FROM banks WHERE ID=" + id;
+  var statement = "SELECT * FROM banks WHERE ID=";
 
-  db.get(statement, function(err, row) {
-    callback(row);
-    console.log(row);
-    prepare(text, row, response);
-  });
+  var row = await db.get(statement, id);
+  prepare(text, row, response);
 }
 
 function callback(row) {
