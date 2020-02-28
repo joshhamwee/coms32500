@@ -41,7 +41,15 @@ function receive(){
         },
         {
           title: "Year 1 Salary",
-          field: "salary",
+          field: "y1_salary",
+          formatter:"money",
+          sorter:"number"
+        },
+
+        {
+          title: "Job Competitiveness",
+          field: "competitive",
+          formatter:"star",
           sorter:"number"
         }
 
