@@ -25,61 +25,10 @@
 
   <body>
     <h1>Bank Table</h1>
-    <div id="example-table"></div>
+    <div id ="banktable">
+    </div>
 
-    <script type="text/javascript">
-      $(function() {
-        //create Tabulator on DOM element with id "example-table"
-        $("#example-table").tabulator({
-          //height: "320px",
-          fitColumns: true,
-          columns: [
-            { title: "Name", field: "name", sorter: "string", width: 150 },
-            {
-              title: "Location",
-              field: "Location",
-              sorter: "string",
-              align: "center"
-            },
-            {
-              title: "Quality of Life",
-              field: "qol",
-              sorter: "number",
-              sortable: true,
-              formatter: "progress"
-            },
-            {
-              title: "Starting Salary",
-              field: "salary",
-              sorter: "number",
-              align: "center"
-            }
-          ],
-          rowClick: function(e, id, data, row) {
-            var url = "bank.html?id=" + id;
-            window.location.href = url;
-          }
-        });
-        //define some sample data
-        var tabledata = [
-          {
-            id: 1,
-            name: "Deutsche",
-            Location: "London",
-            qol: "50",
-            salary: "35000"
-          },
-          {
-            id: 2,
-            name: "HSBC",
-            Location: "London",
-            qol: "75",
-            salary: "52000"
-          }
-        ];
-        //load sample data into the table
-        $("#example-table").tabulator("setData", tabledata);
-      });
-    </script>
+      <script src="script.js"></script>
+
   </body>
 </html>
