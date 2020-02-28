@@ -47,7 +47,6 @@ function receive(){
 
       ],
       rowClick: function(e, id, data, row) {
-        console.log(e);
         var url = "bank.html?id=" + id;
         window.location.href = url;
       }
