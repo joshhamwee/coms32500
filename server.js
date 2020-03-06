@@ -12,12 +12,13 @@
 
 // Change the port to the default 80, if there are no permission issues and port
 // 80 isn't already in use. The root folder corresponds to the "/" url.
-let port = 8080;
-let root = "./public";
+"use strict";
+var port = 8080;
+var root = "./public";
 
 const sqlite3 = require("sqlite3").verbose();
 
-let db = new sqlite3.Database(
+var db = new sqlite3.Database(
   "./database/banks.db",
   sqlite3.OPEN_READWRITE,
   err => {
@@ -34,13 +35,13 @@ let db = new sqlite3.Database(
 // The file types supported are set up in the defineTypes function.
 // The paths variable is a cache of url paths in the site, to check case.
 ("use strict");
-let http = require("http");
-let fs = require("fs").promises;
-let OK = 200,
+var http = require("http");
+var fs = require("fs").promises;
+var OK = 200,
   NotFound = 404,
   BadType = 415,
   Error = 500;
-let types, paths;
+var types, paths;
 
 // Start the server:
 start();
@@ -55,9 +56,9 @@ async function start() {
     types = defineTypes();
     paths = new Set();
     paths.add("/");
-    let service = http.createServer(handle);
+    var service = http.createServer(handle);
     service.listen(port, "localhost");
-    let address = "http://localhost";
+    var address = "http://localhost";
     if (port != 80) address = address + ":" + port;
     console.log("Server running at", address);
   } catch (err) {
@@ -81,9 +82,9 @@ function handle(request, response) {
 // to ensure case-sensitivity.
 async function checkPath(path) {
   if (!paths.has(path)) {
-    let n = path.lastIndexOf("/", path.length - 2);
-    let parent = path.substring(0, n + 1);
-    let ok = await checkPath(parent);
+    var n = path.lastIndexOf("/", path.length - 2);
+    var parent = path.substring(0, n + 1);
+    var ok = await checkPath(parent);
     if (ok) await addContents(parent);
   }
   return paths.has(path);
@@ -91,11 +92,11 @@ async function checkPath(path) {
 
 // Add the files and subfolders in a folder to the set of site paths.
 async function addContents(folder) {
-  let folderBit = 1 << 14;
-  let names = await fs.readdir(root + folder);
-  for (let name of names) {
-    let path = folder + name;
-    let stat = await fs.stat(root + path);
+  var folderBit = 1 << 14;
+  var names = await fs.readdir(root + folder);
+  for (var name of names) {
+    var path = folder + name;
+    var stat = await fs.stat(root + path);
     if ((stat.mode & folderBit) != 0) path = path + "/";
     paths.add(path);
   }
@@ -103,15 +104,15 @@ async function addContents(folder) {
 
 // Find the content type to respond with, or undefined.
 function findType(url) {
-  let dot = url.lastIndexOf(".");
-  let extension = url.substring(dot + 1);
+  var dot = url.lastIndexOf(".");
+  var extension = url.substring(dot + 1);
   extension = extension.split(/\#|\?/g)[0];
   return types[extension];
 }
 
 // Deliver the file that has been read in to the browser.
 function deliver(response, type, content) {
-  let typeHeader = { "Content-Type": type };
+  var typeHeader = { "Content-Type": type };
   response.writeHead(OK, typeHeader);
   response.write(String(content));
   response.end();
@@ -119,7 +120,7 @@ function deliver(response, type, content) {
 
 // Give a minimal failure response to the browser
 function fail(response, code, text) {
-  let textTypeHeader = { "Content-Type": "text/plain" };
+  var textTypeHeader = { "Content-Type": "text/plain" };
   response.writeHead(code, textTypeHeader);
   response.write(text, "utf8");
   response.end();
@@ -185,7 +186,7 @@ async function getFile(url, response) {
 // to appear before calling start().  NOTE: add entries as needed or, for a more
 // complete list, install the mime module and adapt the list it provides.
 function defineTypes() {
-  let types = {
+  var types = {
     html: "text/html",
     css: "text/css",
     js: "application/javascript",
