@@ -1,14 +1,13 @@
-addEventListener('load', fetchData());
+addEventListener("load", fetchData());
 
-function fetchData(){
-  console.log("hi");
+function fetchData() {
   var q = new XMLHttpRequest();
   q.onreadystatechange = receive;
   q.open("GET", "/banks", true);
   q.send();
 }
 
-function receive(){
+function receive() {
   if (this.readyState != XMLHttpRequest.DONE) return;
   var list = JSON.parse(this.responseText);
   console.log(list);
@@ -42,17 +41,16 @@ function receive(){
         {
           title: "Year 1 Salary",
           field: "y1_salary",
-          formatter:"money",
-          sorter:"number"
+          formatter: "money",
+          sorter: "number"
         },
 
         {
           title: "Job Competitiveness",
           field: "competitive",
-          formatter:"star",
-          sorter:"number"
+          formatter: "star",
+          sorter: "number"
         }
-
       ],
       rowClick: function(e, id, data, row) {
         var url = "bank.html?id=" + id;

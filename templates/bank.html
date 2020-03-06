@@ -1,10 +1,67 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>$</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bank Lists Website</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
+    />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
+    <!-- <link rel="stylesheet" href="/public/style/debug.css" /> -->
+    <style>
+      .is-paddingless-horizontal {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: [xl-start] 1fr 1.5rem [md-start] minmax(0, 600px) [md-end]1.5rem 1fr [xl-end];
+      }
+      .grid * {
+        grid-column: md;
+      }
+      .grid-xl {
+        grid-column: xl;
+      }
+      .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
   </head>
+
   <body>
-    <h1>$</h1>
+    <section class="section is-paddingless-horizontal">
+      <div class="container grid">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+          <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li class="is-active">
+              <a href="" aria-current="page">$</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+
+    <section
+      class="section is-paddingless-horizontal is-medium"
+      style="background-image: url('/imgs/goldman.jpg');"
+    >
+      <div class="container grid-xl">
+        <h1 class="title is-2 center has-text-light">$</h1>
+        <h2 class="subtitle is-3 center has-text-light">
+          Best bank in the world
+        </h2>
+        .
+      </div>
+    </section>
   </body>
 </html>

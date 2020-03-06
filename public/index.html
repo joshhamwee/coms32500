@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bank Lists Website</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
+    />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
+    <link rel="stylesheet" href="style/index.css" />
+    <!-- <link rel="stylesheet" href="style/debug.css" /> -->
     <script
       src="https://code.jquery.com/jquery-3.2.1.js"
       integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
@@ -24,11 +37,86 @@
   </head>
 
   <body>
-    <h1>Bank Table</h1>
-    <div id ="banktable">
-    </div>
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title center">
+            Bank List Website
+          </h1>
+          <h2 class="subtitle center">
+            For all your application needs
+          </h2>
+        </div>
+      </div>
+    </section>
+    <section class="section has-background-light">
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <div class="notification is-primary">
+              <h1 class="title">About Us</h1>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
+              varius placerat mi, vitae interdum purus volutpat eu. Sed
+              dignissim velit lacus, non gravida velit lacinia eget. Vivamus ac
+              consequat velit. Pellentesque habitant morbi tristique senectus et
+              netus et malesuada fames ac turpis egestas. Praesent a leo
+              convallis, imperdiet magna vel, iaculis purus. Aenean ornare eget
+              lectus nec pulvinar. Praesent eget dolor in lectus iaculis
+              dapibus. Mauris felis nunc, ornare sed sollicitudin euismod,
+              mattis non lacus. Aenean convallis lacus non lectus pellentesque
+              cursus.
+            </div>
+          </div>
+          <div class="column">
+            <div class="notification is-success">
+              <h1 class="title">How to use the table?</h1>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
+              varius placerat mi, vitae interdum purus volutpat eu. Sed
+              dignissim velit lacus, non gravida velit lacinia eget. Vivamus ac
+              consequat velit. Pellentesque habitant morbi tristique senectus et
+              netus et malesuada fames ac turpis egestas. Praesent a leo
+              convallis, imperdiet magna vel, iaculis purus. Aenean ornare eget
+              lectus nec pulvinar. Praesent eget dolor in lectus iaculis
+              dapibus. Mauris felis nunc, ornare sed sollicitudin euismod,
+              mattis non lacus. Aenean convallis lacus non lectus pellentesque
+              cursus.
+            </div>
+          </div>
+          <div class="column">
+            <div class="notification is-info">
+              <h1 class="title">Got feedback or data?</h1>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
+              varius placerat mi, vitae interdum purus volutpat eu. Sed
+              dignissim velit lacus, non gravida velit lacinia eget. Vivamus ac
+              consequat velit. Pellentesque habitant morbi tristique senectus et
+              netus et malesuada fames ac turpis egestas. Praesent a leo
+              convallis, imperdiet magna vel, iaculis purus. Aenean ornare eget
+              lectus nec pulvinar. Praesent eget dolor in lectus iaculis
+              dapibus. Mauris felis nunc, ornare sed sollicitudin euismod,
+              mattis non lacus. Aenean convallis lacus non lectus pellentesque
+              cursus.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <script src="script.js"></script>
+    <section class="section">
+      <div id="banktable"></div>
+    </section>
 
+    <script src="script.js"></script>
+
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          <strong>Bank Lists</strong> by
+          <a href="https://joshhamwee.io">Josh Hamwee</a> and
+          <a href="https://github.com/ah161652.">Aidan Hood</a>. The source code
+          is licensed by
+          <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+        </p>
+      </div>
+    </footer>
   </body>
 </html>
