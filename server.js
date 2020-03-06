@@ -112,9 +112,15 @@ function findType(url) {
 // Deliver the file that has been read in to the browser.
 function deliver(response, type, content) {
   let typeHeader = { "Content-Type": type };
-  response.writeHead(OK, typeHeader);
-  response.write(String(content));
-  response.end();
+  if (type == "image/jpeg") {
+    response.writeHead(OK, typeHeader);
+    response.write(content);
+    response.end();
+  } else {
+    response.writeHead(OK, typeHeader);
+    response.write(String(content));
+    response.end();
+  }
 }
 
 // Give a minimal failure response to the browser
@@ -163,7 +169,8 @@ function callback(row) {
 function prepare(text, data, response) {
   console.log(data.name);
   var parts = text.split("$");
-  var page = parts[0] + data.name + parts[1] + data.name + parts[2];
+  var page =
+    parts[0] + data.name + parts[1] + data.id + parts[2] + data.name + parts[3];
   console.log(page);
   deliver(response, "text/html", page);
 }
