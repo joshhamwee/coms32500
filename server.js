@@ -112,10 +112,23 @@ function findType(url) {
 
 // Deliver the file that has been read in to the browser.
 function deliver(response, type, content) {
+<<<<<<< HEAD
   var typeHeader = { "Content-Type": type };
   response.writeHead(OK, typeHeader);
   response.write(String(content));
   response.end();
+=======
+  let typeHeader = { "Content-Type": type };
+  if (type == "image/jpeg") {
+    response.writeHead(OK, typeHeader);
+    response.write(content);
+    response.end();
+  } else {
+    response.writeHead(OK, typeHeader);
+    response.write(String(content));
+    response.end();
+  }
+>>>>>>> da6ab3fc0dccf8b043fe844daf718b44ee3e4413
 }
 
 // Give a minimal failure response to the browser
@@ -164,7 +177,8 @@ function callback(row) {
 function prepare(text, data, response) {
   console.log(data.name);
   var parts = text.split("$");
-  var page = parts[0] + data.name + parts[1] + data.name + parts[2];
+  var page =
+    parts[0] + data.name + parts[1] + data.id + parts[2] + data.name + parts[3];
   console.log(page);
   deliver(response, "text/html", page);
 }
