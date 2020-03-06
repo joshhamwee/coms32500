@@ -112,13 +112,8 @@ function findType(url) {
 
 // Deliver the file that has been read in to the browser.
 function deliver(response, type, content) {
-<<<<<<< HEAD
   var typeHeader = { "Content-Type": type };
-  response.writeHead(OK, typeHeader);
-  response.write(String(content));
-  response.end();
-=======
-  let typeHeader = { "Content-Type": type };
+
   if (type == "image/jpeg") {
     response.writeHead(OK, typeHeader);
     response.write(content);
@@ -128,7 +123,6 @@ function deliver(response, type, content) {
     response.write(String(content));
     response.end();
   }
->>>>>>> da6ab3fc0dccf8b043fe844daf718b44ee3e4413
 }
 
 // Give a minimal failure response to the browser
