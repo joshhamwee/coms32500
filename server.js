@@ -73,7 +73,7 @@ function handle(request, response) {
   var url = request.url.toLowerCase();
   console.log("url=", url);
 
-  if (url =="/banks") getList(response);
+  if (url == "/banks") getList(response);
   else if (url.startsWith("/bank.html")) getBank(url, response);
   else getFile(url, response);
 }
@@ -132,28 +132,29 @@ async function getBank(url, response) {
   getData(content, url, response);
 }
 
- function getData(text, url, response) {
+function getData(text, url, response) {
   var parts = url.split("=");
   var id = parts[1];
   var statement = "SELECT * FROM banks WHERE ID=" + id;
 
   db.get(statement, function(err, row) {
     callback(row);
-    console.log(row);
+    // console.log(row);
     prepare(text, row, response);
   });
 }
 
-function getList(response){
+function getList(response) {
   var statement = db.prepare("SELECT * from banks");
   statement.all(ready);
-  function ready(err,list){deliverList(list, response);}
+  function ready(err, list) {
+    deliverList(list, response);
+  }
 }
 
-function deliverList(list, response){
+function deliverList(list, response) {
   var text = JSON.stringify(list);
-  deliver(response, "text/plain",text);
-
+  deliver(response, "text/plain", text);
 }
 
 function callback(row) {
