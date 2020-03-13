@@ -114,7 +114,7 @@ function findType(url) {
 function deliver(response, type, content) {
   var typeHeader = { "Content-Type": type };
 
-  if (type == "image/jpeg") {
+  if (type == "image/jpeg" || type == "image/png") {
     response.writeHead(OK, typeHeader);
     response.write(content);
     response.end();
@@ -172,7 +172,15 @@ function prepare(text, data, response) {
   console.log(data.name);
   var parts = text.split("$");
   var page =
-    parts[0] + data.name + parts[1] + data.id + parts[2] + data.name + parts[3];
+    parts[0] +
+    data.name +
+    parts[1] +
+    data.id +
+    parts[2] +
+    data.name +
+    parts[3] +
+    data.name +
+    parts[4];
   console.log(page);
   deliver(response, "text/html", page);
 }
