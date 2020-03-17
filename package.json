@@ -17,6 +17,7 @@
     "sqlite-async": "^1.0.12",
     "sqlite3": "^4.1.1",
     "tabulator": "^0.2.40",
+    "valid-url": "^1.0.9",
     "valimate": "^2.3.0"
   }
 }

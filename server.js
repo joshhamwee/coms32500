@@ -12,13 +12,12 @@
 
 // Change the port to the default 80, if there are no permission issues and port
 // 80 isn't already in use. The root folder corresponds to the "/" url.
-"use strict";
 var port = 8080;
 var root = "./public";
 
+const validUrl = require('valid-url');
 const sqlite3 = require("sqlite3").verbose();
-
-var db = new sqlite3.Database(
+const db = new sqlite3.Database(
   "./database/banks.db",
   sqlite3.OPEN_READWRITE,
   err => {
@@ -67,14 +66,31 @@ async function start() {
   }
 }
 
+function remove_non_ascii(str) {
+
+  if ((str===null) || (str===''))
+       return false;
+ else
+   str = str.toString();
+
+  return str.replace(/[^\x20-\x7E]/g, '');
+}
+
 // Serve a request by delivering a file.
 function handle(request, response) {
   //find url and print
   var url = request.url.toLowerCase();
+  url = remove_non_ascii(url);
   console.log("url=", url);
 
+  if (url.endsWith("/")) url = url + "index.html";
+
+  if (url.includes("/.")||url.includes("//")||!url.startsWith("/")||url.length>30) return fail(response, NotFound, "Invalid URL")
+
   if (url == "/banks") getList(response);
+
   else if (url.startsWith("/bank.html")) getBank(url, response);
+
   else getFile(url, response);
 }
 
@@ -142,14 +158,42 @@ async function getBank(url, response) {
 function getData(text, url, response) {
   var parts = url.split("=");
   var id = parts[1];
-  var statement = "SELECT * FROM banks WHERE ID=" + id;
 
-  db.get(statement, function(err, row) {
-    callback(row);
-    // console.log(row);
-    prepare(text, row, response);
+  var check = "SELECT EXISTS(SELECT 1 FROM banks WHERE ID=" + id +")"
+
+  db.get(check, function(err, valid) {
+    console.log(valid)
+
+    if (valid==1){
+      var statement = "SELECT * FROM banks WHERE ID=" + id;
+
+      db.get(statement, function(err, row) {
+        callback(row);
+        // console.log(row);
+        prepare(text, row, response);
+      });}
+
+      else {
+        return fail(response, NotFound, "DB query error")
+      }
+
+
+
+
   });
 }
+
+
+
+
+  // var statement = "SELECT * FROM banks WHERE ID=" + id;
+  //
+  // db.get(statement, function(err, row) {
+  //   callback(row);
+  //   // console.log(row);
+  //   prepare(text, row, response);
+  // });
+// }
 
 function getList(response) {
   var statement = db.prepare("SELECT * from banks");
@@ -165,11 +209,11 @@ function deliverList(list, response) {
 }
 
 function callback(row) {
-  console.log("R:" + row);
+  //console.log("R:" + row);
 }
 
 function prepare(text, data, response) {
-  console.log(data.name);
+  //console.log(data.name);
   var parts = text.split("$");
   var page =
     parts[0] +
@@ -181,7 +225,7 @@ function prepare(text, data, response) {
     parts[3] +
     data.name +
     parts[4];
-  console.log(page);
+  //console.log(page);
   deliver(response, "text/html", page);
 }
 
@@ -223,11 +267,6 @@ function defineTypes() {
     mp4: "video/mp4",
     webm: "video/webm",
     ico: "image/x-icon", // just for favicon.ico
-    xhtml: undefined, // non-standard, use .html
-    htm: undefined, // non-standard, use .html
-    rar: undefined, // non-standard, platform dependent, use .zip
-    doc: undefined, // non-standard, platform dependent, use .pdf
-    docx: undefined // non-standard, platform dependent, use .pdf
   };
   return types;
 }
