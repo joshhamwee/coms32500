@@ -159,33 +159,6 @@ function getData(text, url, response) {
   var parts = url.split("=");
   var id = parts[1];
 
-//   var check = "SELECT EXISTS(SELECT 1 FROM banks WHERE ID=" + id +")"
-//
-//   db.get(check, function(err, valid) {
-//     console.log(valid)
-//
-//     if (valid==1){
-//       var statement = "SELECT * FROM banks WHERE ID=" + id;
-//
-//       db.get(statement, function(err, row) {
-//         callback(row);
-//         // console.log(row);
-//         prepare(text, row, response);
-//       });}
-//
-//       else {
-//         return fail(response, NotFound, "DB query error")
-//       }
-//
-//
-//
-//
-//   });
-// }
-
-
-
-
   var statement = "SELECT * FROM banks WHERE ID=" + id;
 
   db.get(statement, function(err, row) {
