@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
     "bulma": "^0.8.0",
     "sqlite-async": "^1.0.12",
     "sqlite3": "^4.1.1",

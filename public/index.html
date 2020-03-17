@@ -3,20 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Website</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Bank Lists Website</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
-    />
-    <script
-      defer
-      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
-    ></script>
     <link rel="stylesheet" href="style/index.css" />
-    <!-- <link rel="stylesheet" href="style/debug.css" /> -->
+    <link rel="stylesheet" href="style/frameworks/bulma.css" />
+    <script src="scripts/font_awesome.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.2.1.js"
       integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
@@ -34,13 +26,16 @@
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/2.11.0/tabulator.min.js"></script>
-
   </head>
 
   <body>
-    <img src="imgs/svg/logo.png">
     <section class="hero">
-      <div class="hero-body">
+      <div class="hero-body is-paddingless-vertical">
+        <div class="container center">
+          <figure class="image is-128x128">
+            <img src="imgs/svg/logo.png" />
+          </figure>
+        </div>
         <div class="container">
           <h1 class="title center">
             Bank List Website
@@ -52,7 +47,7 @@
       </div>
     </section>
 
-        <!-- <section
+    <!-- <section
           class="section is-paddingless-horizontal is-medium"
           style="background-image: '/imgs/svg/bank_svg.png');"
         > -->
@@ -67,11 +62,6 @@
               dignissim velit lacus, non gravida velit lacinia eget. Vivamus ac
               consequat velit. Pellentesque habitant morbi tristique senectus et
               netus et malesuada fames ac turpis egestas. Praesent a leo
-              convallis, imperdiet magna vel, iaculis purus. Aenean ornare eget
-              lectus nec pulvinar. Praesent eget dolor in lectus iaculis
-              dapibus. Mauris felis nunc, ornare sed sollicitudin euismod,
-              mattis non lacus. Aenean convallis lacus non lectus pellentesque
-              cursus.
             </div>
           </div>
           <div class="column">
@@ -82,11 +72,6 @@
               dignissim velit lacus, non gravida velit lacinia eget. Vivamus ac
               consequat velit. Pellentesque habitant morbi tristique senectus et
               netus et malesuada fames ac turpis egestas. Praesent a leo
-              convallis, imperdiet magna vel, iaculis purus. Aenean ornare eget
-              lectus nec pulvinar. Praesent eget dolor in lectus iaculis
-              dapibus. Mauris felis nunc, ornare sed sollicitudin euismod,
-              mattis non lacus. Aenean convallis lacus non lectus pellentesque
-              cursus.
             </div>
           </div>
           <div class="column">
@@ -97,11 +82,6 @@
               dignissim velit lacus, non gravida velit lacinia eget. Vivamus ac
               consequat velit. Pellentesque habitant morbi tristique senectus et
               netus et malesuada fames ac turpis egestas. Praesent a leo
-              convallis, imperdiet magna vel, iaculis purus. Aenean ornare eget
-              lectus nec pulvinar. Praesent eget dolor in lectus iaculis
-              dapibus. Mauris felis nunc, ornare sed sollicitudin euismod,
-              mattis non lacus. Aenean convallis lacus non lectus pellentesque
-              cursus.
             </div>
           </div>
         </div>
@@ -112,7 +92,7 @@
       <div id="banktable"></div>
     </section>
 
-    <script src="script.js"></script>
+    <script src="scripts/create_table.js"></script>
 
     <footer class="footer">
       <div class="content has-text-centered">
