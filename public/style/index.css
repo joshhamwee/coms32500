@@ -6,4 +6,9 @@
 
 .is-paddingless-vertical {
   padding-top: 0;
+  padding-bottom: 0;
+}
+
+.is-paddingless-table {
+  padding: 3rem;
 }

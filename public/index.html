@@ -8,6 +8,7 @@
     <title>Bank Lists Website</title>
     <link rel="stylesheet" href="style/index.css" />
     <link rel="stylesheet" href="style/frameworks/bulma.css" />
+
     <script src="scripts/font_awesome.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.2.1.js"
@@ -22,7 +23,7 @@
     ></script>
 
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/2.11.0/tabulator.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/css/bulma/tabulator_bulma.min.css"
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/2.11.0/tabulator.min.js"></script>
@@ -47,10 +48,6 @@
       </div>
     </section>
 
-    <!-- <section
-          class="section is-paddingless-horizontal is-medium"
-          style="background-image: '/imgs/svg/bank_svg.png');"
-        > -->
     <section class="section has-background-light">
       <div class="container">
         <div class="columns">
@@ -88,9 +85,11 @@
       </div>
     </section>
 
-    <section class="section">
-      <div id="banktable"></div>
-    </section>
+    <div class="section is-padding-table">
+      <div class="table-container is-fluid">
+        <table class="table is-striped is-hoverable" id="banktable"></table>
+      </div>
+    </div>
 
     <script src="scripts/create_table.js"></script>
 
