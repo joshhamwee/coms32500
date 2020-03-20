@@ -9,6 +9,21 @@
   padding-bottom: 0;
 }
 
-.is-paddingless-table {
-  padding: 3rem;
+.is-padding-logo {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+@media only screen and (min-width: 768px) {
+  .is-padding-table {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .is-padding-table {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
 }
