@@ -15,7 +15,7 @@
 var port = 8080;
 var root = "./public";
 
-const validUrl = require('valid-url');
+const validUrl = require("valid-url");
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(
   "./database/banks.db",
@@ -67,13 +67,10 @@ async function start() {
 }
 
 function remove_non_ascii(str) {
+  if (str === null || str === "") return false;
+  else str = str.toString();
 
-  if ((str===null) || (str===''))
-       return false;
- else
-   str = str.toString();
-
-  return str.replace(/[^\x20-\x7E]/g, '');
+  return str.replace(/[^\x20-\x7E]/g, "");
 }
 
 // Serve a request by delivering a file.
@@ -85,12 +82,16 @@ function handle(request, response) {
 
   if (url.endsWith("/")) url = url + "index.html";
 
-  if (url.includes("/.")||url.includes("//")||!url.startsWith("/")||url.length>30) return fail(response, NotFound, "Invalid URL")
+  if (
+    url.includes("/.") ||
+    url.includes("//") ||
+    !url.startsWith("/") ||
+    url.length > 30
+  )
+    return fail(response, NotFound, "Invalid URL");
 
   if (url == "/banks") getList(response);
-
   else if (url.startsWith("/bank.html")) getBank(url, response);
-
   else getFile(url, response);
 }
 
@@ -162,9 +163,8 @@ function getData(text, url, response) {
   var statement = "SELECT * FROM banks WHERE ID=" + id;
 
   db.get(statement, function(err, row) {
-
-    if(err){
-      return fail(response, NotFound, "DB query error")
+    if (err) {
+      return fail(response, NotFound, "DB query error");
     }
     callback(row);
     console.log(row);
@@ -191,7 +191,7 @@ function callback(row) {
 
 function prepare(text, data, response) {
   //console.log(data.name);
-  if (data == undefined) return fail(response, NotFound, "Database error")
+  if (data == undefined) return fail(response, NotFound, "Database error");
   var parts = text.split("$");
   var page =
     parts[0] +
@@ -201,9 +201,14 @@ function prepare(text, data, response) {
     parts[2] +
     data.name +
     parts[3] +
-    data.name +
-    parts[4];
-  //console.log(page);
+    data.link +
+    parts[4] +
+    data.facebook +
+    parts[5] +
+    data.linkedin +
+    parts[6] +
+    data.description +
+    parts[7];
   deliver(response, "text/html", page);
 }
 
@@ -244,7 +249,7 @@ function defineTypes() {
     mp3: "audio/mpeg",
     mp4: "video/mp4",
     webm: "video/webm",
-    ico: "image/x-icon", // just for favicon.ico
+    ico: "image/x-icon" // just for favicon.ico
   };
   return types;
 }
