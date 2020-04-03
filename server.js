@@ -86,7 +86,7 @@ function handle(request, response) {
 
 
 
-  if(!url.endsWith(".html") && !url.endsWith(".js") && !url.endsWith(".css") && !url.endsWith(".png") && !url.endsWith(".ico") && !url.endsWith(".jpg") && !url.includes("bank.html?id=") && !url.endsWith("banks") ) return fail(response, BadType, "Not allowed request type")
+  if(!url.endsWith(".html") && !url.endsWith(".js") && !url.endsWith(".css") && !url.endsWith(".png") && !url.endsWith(".ico") && !url.endsWith(".jpg") && !url.includes("bank.html?id=") && !url.endsWith("banks") ) return fail(response, BadType, "Bad request type")
 
   if (url.includes("/.")||url.includes("//")||!url.startsWith("/")||url.length>30) return fail(response, NotFound, "Illegal URL")
 
