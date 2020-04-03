@@ -1,4 +1,5 @@
 addEventListener("load", fetchData());
+var list;
 
 function fetchData() {
   var q = new XMLHttpRequest();
@@ -9,9 +10,12 @@ function fetchData() {
 
 function receive() {
   if (this.readyState != XMLHttpRequest.DONE) return;
-  var list = JSON.parse(this.responseText);
+  list = JSON.parse(this.responseText);
   console.log(list);
+  table();
+}
 
+function table() {
   if (window.innerWidth < 750) {
     $(function() {
       //create Tabulator on DOM element with id "banktable"
@@ -87,7 +91,11 @@ function receive() {
     });
   }
 }
-
-window.onresize = function() {
-  location.reload();
-};
+$(window).on("resize", function() {
+  table();
+  $(".tabulator").tabulator("redraw");
+});
+// window.onresize = function() {
+//   table();
+//   console.log(window.innerWidth);
+// };
