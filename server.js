@@ -78,22 +78,26 @@ function handle(request, response) {
   //find url and print
   var url = request.url.toLowerCase();
   url = remove_non_ascii(url);
-  console.log("url=", url);
-
   if (url.endsWith("/")) url = url + "index.html";
 
-  if (
-    url.includes("/.") ||
-    url.includes("//") ||
-    !url.startsWith("/") ||
-    url.length > 30
-  )
-    return fail(response, NotFound, "Invalid URL");
+  console.log("method=", request.method);
+  console.log("url=", url);
+  console.log("headers=", request.header);
+
+
+
+  if(!url.endsWith(".html") && !url.endsWith(".js") && !url.endsWith(".css") && !url.endsWith(".png") && !url.endsWith(".ico") && !url.endsWith(".jpg") && !url.includes("bank.html?id=") && !url.endsWith("banks") ) return fail(response, BadType, "Not allowed request type")
+
+  if (url.includes("/.")||url.includes("//")||!url.startsWith("/")||url.length>30) return fail(response, NotFound, "Illegal URL")
 
   if (url == "/banks") getList(response);
+
   else if (url.startsWith("/bank.html")) getBank(url, response);
+
   else getFile(url, response);
 }
+
+
 
 // Check if a path is in or can be added to the set of site paths, in order
 // to ensure case-sensitivity.
