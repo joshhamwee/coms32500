@@ -34,8 +34,21 @@ const db = new sqlite3.Database(
 // The file types supported are set up in the defineTypes function.
 // The paths variable is a cache of url paths in the site, to check case.
 ("use strict");
-var http = require("http");
-var fs = require("fs").promises;
+const http = require("http");
+const https = require("https");
+const crypto = require('crypto');
+const fs = require("fs").promises;
+const fs_sync = require("fs");
+
+const security = {
+
+  key: fs_sync.readFileSync("./certs/key.pem"),
+  cert: fs_sync.readFileSync("./certs/certificate.pem")
+};
+
+
+
+
 var OK = 200,
   NotFound = 404,
   BadType = 415,
@@ -52,18 +65,43 @@ async function start() {
   try {
     await fs.access(root);
     await fs.access(root + "/index.html");
+
+
     types = defineTypes();
     paths = new Set();
     paths.add("/");
-    var service = http.createServer(handle);
-    service.listen(port, "localhost");
-    var address = "http://localhost";
-    if (port != 80) address = address + ":" + port;
-    console.log("Server running at", address);
+
+
+    var service = https.createServer(security, handle);
+    service.listen(443, "localhost");
+
+    console.log("Server running at 443 for https, 8080 for http");
+
+
+
+
+    var http_service =  http.createServer(http_redirect);
+    http_service.listen(8080, "localhost");
+
+
+
+
+
+
+
+
   } catch (err) {
     console.log(err);
     process.exit(1);
   }
+}
+
+function http_redirect(request, response){
+  var redirect = "https://localhost"
+  console.log("REDIRECT")
+
+  response.writeHead(301,{Location: redirect});
+  response.end();
 }
 
 function remove_non_ascii(str) {
