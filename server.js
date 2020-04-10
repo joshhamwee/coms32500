@@ -34,8 +34,21 @@ const db = new sqlite3.Database(
 // The file types supported are set up in the defineTypes function.
 // The paths variable is a cache of url paths in the site, to check case.
 ("use strict");
-var http = require("http");
-var fs = require("fs").promises;
+const http = require("http");
+const https = require("https");
+const crypto = require('crypto');
+const fs = require("fs").promises;
+const fs_sync = require("fs");
+
+const security = {
+
+  key: fs_sync.readFileSync("./certs/key.pem"),
+  cert: fs_sync.readFileSync("./certs/certificate.pem")
+};
+
+
+
+
 var OK = 200,
   NotFound = 404,
   BadType = 415,
@@ -55,9 +68,9 @@ async function start() {
     types = defineTypes();
     paths = new Set();
     paths.add("/");
-    var service = http.createServer(handle);
+    var service = https.createServer(security, handle);
     service.listen(port, "localhost");
-    var address = "http://localhost";
+    var address = "https://localhost";
     if (port != 80) address = address + ":" + port;
     console.log("Server running at", address);
   } catch (err) {

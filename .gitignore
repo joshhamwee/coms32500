@@ -95,7 +95,7 @@ Thumbs.db
 # ignore private/secret files
 *.der
 *.key
-*.pem
+
 
 # -------------------------
 # BEGIN Whitelisted Files
