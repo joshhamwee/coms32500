@@ -65,18 +65,43 @@ async function start() {
   try {
     await fs.access(root);
     await fs.access(root + "/index.html");
+
+
     types = defineTypes();
     paths = new Set();
     paths.add("/");
+
+
     var service = https.createServer(security, handle);
-    service.listen(port, "localhost");
-    var address = "https://localhost";
-    if (port != 80) address = address + ":" + port;
-    console.log("Server running at", address);
+    service.listen(443, "localhost");
+
+    console.log("Server running at 443 for https, 8080 for http");
+
+
+
+
+    var http_service =  http.createServer(http_redirect);
+    http_service.listen(8080, "localhost");
+
+
+
+
+
+
+
+
   } catch (err) {
     console.log(err);
     process.exit(1);
   }
+}
+
+function http_redirect(request, response){
+  var redirect = "https://localhost"
+  console.log("REDIRECT")
+
+  response.writeHead(301,{Location: redirect});
+  response.end();
 }
 
 function remove_non_ascii(str) {
