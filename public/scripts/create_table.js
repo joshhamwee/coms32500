@@ -1,6 +1,9 @@
-addEventListener("load", fetchData());
-var list;
+const input = document.getElementById("search");
+input.addEventListener("input", fetchSearch);
 
+addEventListener("load", fetchData());
+
+var list;
 function fetchData() {
   var q = new XMLHttpRequest();
   q.onreadystatechange = receive;
@@ -8,10 +11,31 @@ function fetchData() {
   q.send();
 }
 
+function fetchSearch(e) {
+  if (e.target.value == "") {
+    fetchData();
+  } else {
+    var q = new XMLHttpRequest();
+    var query = "/search=" + e.target.value;
+    console.log(query);
+    q.onreadystatechange = receive;
+    q.open("GET", query, true);
+    q.send();
+  }
+}
+
 function receive() {
   if (this.readyState != XMLHttpRequest.DONE) return;
   list = JSON.parse(this.responseText);
-  console.log(list);
+  if (list.length == 0) {
+    input.classList.add("is-danger");
+  }
+  if (list.length < 26) {
+    input.classList.add("is-success");
+  } else {
+    input.classList.remove("is-danger");
+    input.classList.remove("is-success");
+  }
   table();
 }
 
