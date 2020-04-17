@@ -52,49 +52,122 @@
       <div class="container">
         <div class="columns">
           <div class="column">
-            <div class="notification is-primary">
-              <h1 class="title">About Us</h1>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-              varius placerat mi, vitae interdum purus volutpat eu. Sed
-              dignissim velit lacus, non gravida velit lacinia eget. Vivamus ac
-              consequat velit. Pellentesque habitant morbi tristique senectus et
-              netus et malesuada fames ac turpis egestas. Praesent a leo
+            <div class="box">
+              <article class="media">
+                <div class="media-content">
+                  <div class="content">
+                    <p>
+                      <strong>Who are we?</strong>
+                      <br />
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Aenean efficitur sit amet massa fringilla egestas. Nullam
+                      condimentum luctus turpis.
+                      <br />
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Aenean efficitur sit amet massa fringilla egestas. Nullam
+                      condimentum luctus turpis.
+                    </p>
+                  </div>
+                </div>
+              </article>
             </div>
           </div>
           <div class="column">
-            <div class="notification is-success">
-              <h1 class="title">How to use the table?</h1>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-              varius placerat mi, vitae interdum purus volutpat eu. Sed
-              dignissim velit lacus, non gravida velit lacinia eget. Vivamus ac
-              consequat velit. Pellentesque habitant morbi tristique senectus et
-              netus et malesuada fames ac turpis egestas. Praesent a leo
+            <div class="box">
+              <article class="media">
+                <div class="media-content">
+                  <div class="content">
+                    <p>
+                      <strong>How to use this website</strong>
+                      <br />
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Aenean efficitur sit amet massa fringilla egestas. Nullam
+                      condimentum luctus turpis.
+                      <br />
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Aenean efficitur sit amet massa fringilla egestas. Nullam
+                      condimentum luctus turpis.
+                    </p>
+                  </div>
+                </div>
+              </article>
             </div>
           </div>
           <div class="column">
-            <div class="notification is-info">
-              <h1 class="title">Got feedback or data?</h1>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-              varius placerat mi, vitae interdum purus volutpat eu. Sed
-              dignissim velit lacus, non gravida velit lacinia eget. Vivamus ac
-              consequat velit. Pellentesque habitant morbi tristique senectus et
-              netus et malesuada fames ac turpis egestas. Praesent a leo
+            <div class="box">
+              <article class="media">
+                <div class="media-content">
+                  <div class="content">
+                    <p>
+                      <strong>What does the future hold</strong>
+                      <br />
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Aenean efficitur sit amet massa fringilla egestas. Nullam
+                      condimentum luctus turpis.
+                      <br />
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Aenean efficitur sit amet massa fringilla egestas. Nullam
+                      condimentum luctus turpis.
+                    </p>
+                  </div>
+                </div>
+              </article>
             </div>
           </div>
         </div>
-      <div class="content has-text-centered">
-        <a href="admin.html">Admin Page</a>
-      </div>
+        <div class="content has-text-centered">
+          <a href="admin.html">Admin Page</a>
+        </div>
       </div>
     </section>
+
+    <div class="modal" id="loginModal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <form action="" class="box">
+          <div class="field">
+            <label for="" class="label">Username</label>
+            <div class="control has-icons-left has-icons-right">
+              <input
+                type="text"
+                placeholder="e.g. warren.b"
+                class="input"
+                required
+              />
+              <span class="icon is-small is-left">
+                <i class="fa fa-user"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="" class="label">Password</label>
+            <div class="control has-icons-left">
+              <input
+                type="password"
+                placeholder="*******"
+                class="input"
+                required
+              />
+              <span class="icon is-small is-left">
+                <i class="fa fa-lock"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field">
+            <button class="button is-success">
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
 
     <div class="section ">
       <div class="table-container is-fluid is-padding-table">
         <table class="table is-striped is-hoverable" id="banktable"></table>
       </div>
     </div>
-
-    <script src="scripts/create_table.js"></script>
 
     <footer class="footer">
       <div class="content has-text-centered">
@@ -105,7 +178,19 @@
           is licensed by
           <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
         </p>
+        <p>
+          <button
+            class="button is-primary modal-button"
+            data-target="#loginModal"
+            aria-haspopup="true"
+          >
+            Admin Login
+          </button>
+        </p>
       </div>
     </footer>
+
+    <script src="scripts/create_table.js"></script>
+    <script src="scripts/index.js"></script>
   </body>
 </html>
