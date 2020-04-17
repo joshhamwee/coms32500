@@ -115,16 +115,13 @@
             </div>
           </div>
         </div>
-        <div class="content has-text-centered">
-          <a href="admin.html">Admin Page</a>
-        </div>
       </div>
     </section>
 
     <div class="modal" id="loginModal">
       <div class="modal-background"></div>
       <div class="modal-content">
-        <form action="" class="box">
+        <form action="/login" method="post" class="box">
           <div class="field">
             <label for="" class="label">Username</label>
             <div class="control has-icons-left has-icons-right">
@@ -132,6 +129,8 @@
                 type="text"
                 placeholder="e.g. warren.b"
                 class="input"
+                id = "username"
+                name = "username"
                 required
               />
               <span class="icon is-small is-left">
@@ -146,6 +145,8 @@
                 type="password"
                 placeholder="*******"
                 class="input"
+                id = "password"
+                name = "password"
                 required
               />
               <span class="icon is-small is-left">
@@ -154,9 +155,7 @@
             </div>
           </div>
           <div class="field">
-            <button class="button is-success">
-              Login
-            </button>
+            <input type="submit" value="Submit">
           </div>
         </form>
       </div>
