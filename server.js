@@ -85,6 +85,7 @@ function handle(request, response) {
   if (
     !url.endsWith(".html") &&
     !url.includes("submit_bank") &&
+    !url.includes("login") &&
     !url.includes("remove_bank") &&
     !url.includes("add_admin") &&
     !url.includes("remove_admin") &&
@@ -100,7 +101,12 @@ function handle(request, response) {
     return fail(response, BadType, "Bad request type");
 
   // validtae url requests to prevent filesystem access
-  if (url.includes("/.") || url.includes("//") || url.length > 200)
+  if (
+    url.includes("/.") ||
+    url.includes("//") ||
+    url.length > 200 ||
+    url.includes("admin.html")
+  )
     return fail(response, NotFound, "Illegal URL");
 
   //call to get the list of banks for the home page
@@ -111,9 +117,64 @@ function handle(request, response) {
   else if (url.startsWith("/remove_bank")) removeBank(url, response);
   else if (url.startsWith("/add_admin")) addAdmin(request, response);
   else if (url.startsWith("/remove_admin")) removeAdmin(url, response);
+  else if (url.startsWith("/login")) login(request, response);
   else if (url.startsWith("/search")) getSearch(url, response);
   // call for any other url request
   else getFile(url, response);
+}
+
+async function login(request, response) {
+  var body = "";
+
+  request.on("data", function(data) {
+    body += data;
+
+    // Too much POST data, kill the connection!
+    // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+    if (body.length > 1e6) request.connection.destroy();
+  });
+
+  request.on("end", async function() {
+    var post = qs.parse(body);
+
+    var username = post.username;
+    var password = post.password;
+
+    var statement =
+      "select password_hash from admins where email = " + "'" + username + "';";
+
+    try {
+      //get row from db, and sent to prepare
+      var hash_password = await db.get(statement);
+      var hash_password = String(JSON.stringify(hash_password));
+
+      var parts = hash_password.split(":");
+      var p = parts[1].replace('"', "");
+      var p = p.replace('"', "");
+      var p = p.replace("}", "");
+
+      console.log(p);
+
+      var correct_password = await bcrypt.compare(password, p);
+
+      if (correct_password) {
+        url = "/admin.html";
+        var type = findType(url);
+        var file = root + url;
+        var content = await fs.readFile(file);
+
+        // pass contents to deliver
+        deliver(response, type, content);
+      } else {
+        return fail(response, NotFound, "Wrong Password");
+      }
+    } catch (err) {
+      console.log("Error", err.stack);
+      console.log("Error", err.name);
+      console.log("Error", err.message);
+      return fail(response, NotFound, "DB query error");
+    }
+  });
 }
 
 // function to get list of banks for homepage.
@@ -335,7 +396,6 @@ async function removeAdmin(url, response) {
 
   //prepared statement using the id from url
   var statement = "delete from admins where email = " + "'" + username + "'";
-
   try {
     await db.run(statement);
     url = "/index.html";

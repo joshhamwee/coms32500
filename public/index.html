@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Website</title>
     <title>Bank Lists Website</title>
     <link rel="stylesheet" href="style/index.css" />
     <link rel="stylesheet" href="style/frameworks/bulma.css" />
@@ -115,16 +114,13 @@
             </div>
           </div>
         </div>
-        <div class="content has-text-centered">
-          <a href="admin.html">Admin Page</a>
-        </div>
       </div>
     </section>
 
     <div class="modal" id="loginModal">
       <div class="modal-background"></div>
       <div class="modal-content">
-        <form action="" class="box">
+        <form action="/login" method="post" class="box">
           <div class="field">
             <label for="" class="label">Username</label>
             <div class="control has-icons-left has-icons-right">
@@ -132,6 +128,8 @@
                 type="text"
                 placeholder="e.g. warren.b"
                 class="input"
+                id="username"
+                name="username"
                 required
               />
               <span class="icon is-small is-left">
@@ -146,6 +144,8 @@
                 type="password"
                 placeholder="*******"
                 class="input"
+                id="password"
+                name="password"
                 required
               />
               <span class="icon is-small is-left">
@@ -153,14 +153,14 @@
               </span>
             </div>
           </div>
-          <div class="field">
-            <button class="button is-success">
-              Login
-            </button>
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link" id="submit">Submit</button>
+            </div>
           </div>
         </form>
+        <button class="modal-close is-large" aria-label="close"></button>
       </div>
-      <button class="modal-close is-large" aria-label="close"></button>
     </div>
 
     <div class="section ">

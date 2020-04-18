@@ -1,104 +1,330 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-GB">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Bank Lists Website</title>
     <link rel="stylesheet" href="style/admin.css" />
     <link rel="stylesheet" href="style/frameworks/bulma.css" />
+
     <script src="scripts/font_awesome.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.js"
+      integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+      integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+      crossorigin="anonymous"
+    ></script>
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.4.3/css/bulma/tabulator_bulma.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/2.11.0/tabulator.min.js"></script>
   </head>
 
   <body>
+    <section class="hero">
+      <div class="hero-body-padding-small is-padding-logo">
+        <div class="container center">
+          <figure class="image is-128x128 ">
+            <img src="imgs/svg/logo.png" />
+          </figure>
+        </div>
+        <div class="container">
+          <h1 class="title center">
+            Bank List Website
+          </h1>
+          <h2 class="subtitle center">
+            For all your application needs
+          </h2>
+        </div>
+      </div>
+    </section>
 
-    <h1>ADD BANK</h1>
+    <div class="tabs is-centered is-medium">
+      <ul>
+        <li class="is-active"><a>Add Bank</a></li>
+        <li><a>Remove Bank</a></li>
+        <li><a>Add Admin</a></li>
+      </ul>
+    </div>
 
-    <section>
-    <form action="/submit_bank">
+    <div class="column is-12 tabs-content">
+      <div class="tab-content is-active">
+        <section class="section grid">
+          <div class="content notification center">
+            <form action="/submit_bank">
+              <div class="field">
+                <label for="id" class="label">ID: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="number"
+                    class="input"
+                    id="id"
+                    name="id"
+                    required
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-id-card"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="Name" class="label">Name: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="text"
+                    class="input"
+                    id="name"
+                    name="name"
+                    required
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-user"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="Link" class="label">Link: </label>
+                <div class="control has-icons-left">
+                  <input type="text" class="input" id="link" name="link" />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-link"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="Facebook" class="label">Facebook: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="text"
+                    class="input"
+                    id="facebook"
+                    name="facebook"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fab fa-facebook"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="LinkedIn" class="label">LinkedIn: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="text"
+                    class="input"
+                    id="linkedin"
+                    name="linkedin"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fab fa-linkedin"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="Description" class="label">Description: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="text"
+                    id="description"
+                    name="description"
+                    class="input"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-pen"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="Size" class="label">Size: </label>
+                <div class="control has-icons-left">
+                  <input type="number" id="size" class="input" name="size" />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-sort-numeric-up-alt"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="Category" class="label">Category: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="text"
+                    id="Category"
+                    class="input"
+                    name="Category"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-filter"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="Competitive" class="label">Competitive: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="Number"
+                    id="Competitive"
+                    name="Competitive"
+                    class="input"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-filter"></i>
+                  </span>
+                </div>
+              </div>
 
-    <label for="ID">ID: </label>
-    <input type="number" id="id" name="id"><br><br>
+              <div class="field">
+                <label for="Year 1 Salary" class="label">Year 1 Salary: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="Number"
+                    id="Year 1 Salary"
+                    name="Year 1 Salary"
+                    class="input"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-money-bill-wave"></i>
+                  </span>
+                </div>
+              </div>
 
-    <label for="Name">Name: </label>
-    <input type="text" id="name" name="name"><br><br>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-link" id="submit" value="Submit">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+      <div class="tab-content">
+        <section class="section grid">
+          <div class="content notification center">
+            <form action="/remove_bank">
+              <div class="field">
+                <label for="Name" class="label">Name: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="input"
+                    required
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-trash"></i>
+                  </span>
+                </div>
+              </div>
 
-    <label for="Link">Link: </label>
-    <input type="text" id="link" name="link"><br><br>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-link" id="submit" value="Submit">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+      <div class="tab-content">
+        <section class="section grid">
+          <div class="content notification center">
+            <form action="/add_admin" method="post">
+              <div class="field">
+                <label for="First Name" class="label">First Name: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="text"
+                    id="fname"
+                    name="fname"
+                    class="input"
+                    required
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-user-edit"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="Last Name" class="label">Last Name: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="text"
+                    id="lname"
+                    name="lname"
+                    class="input"
+                    required
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-user-edit"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="Username" class="label">Username: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="input"
+                    required
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-user"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="Password" class="label">Password: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="input"
+                    required
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-lock"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-link" id="submit" value="Submit">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
 
-    <label for="Facebook">Facebook: </label>
-    <input type="text" id="facebook" name="facebook"><br><br>
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          <strong>Bank Lists</strong> by
+          <a href="https://joshhamwee.io">Josh Hamwee</a> and
+          <a href="https://github.com/ah161652.">Aidan Hood</a>. The source code
+          is licensed by
+          <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+        </p>
+      </div>
+    </footer>
 
-    <label for="LinkedIn">LinkedIn: </label>
-    <input type="text" id="linkedin" name="linkedin"><br><br>
-
-    <label for="Description">Description: </label>
-    <input type="text" id="description" name="description"><br><br>
-
-    <label for="Size">Size: </label>
-    <input type="number" id="size" name="size"><br><br>
-
-    <label for="Category">Category: </label>
-    <input type="text" id="Category" name="Category"><br><br>
-
-    <label for="Competitive">Competitive: </label>
-    <input type="Number" id="Competitive" name="Competitive"><br><br>
-
-    <label for="Year 1 Salary">Year 1 Salary: </label>
-    <input type="Number" id="Year 1 Salary" name="Year 1 Salary"><br><br>
-
-    <input type="submit" value="Submit">
-  </form>
-</section>
-
-<h1>REMOVE BANK</h1>
-<section>
-
-<form action="/remove_bank">
-
-<label for="Name">Name: </label>
-<input type="text" id="name" name="name"><br><br>
-
-<input type="submit" value="Submit">
-</form>
-</section>
-
-<h1>ADD ADMIN</h1>
-<section>
-
-<form action="/add_admin" method ="post">
-
-<label for="First Name">First Name: </label>
-<input type="text" id="fname" name="fname"><br><br>
-
-<label for="Last Name">Last Name: </label>
-<input type="text" id="lname" name="lname"><br><br>
-
-<label for="Username">Username: </label>
-<input type="text" id="username" name="username"><br><br>
-
-<label for="Password">Password: </label>
-<input type="password" id="password" name="password"><br><br>
-
-
-<input type="submit" value="Submit">
-</form>
-</section>
-
-
-
-
-
-<h1>REMOVE ADMIN</h1>
-<section>
-
-<form action="/remove_admin">
-
-<label for="Username">Username: </label>
-<input type="text" id="username" name="username"><br><br>
-
-<input type="submit" value="Submit">
-</form>
-</section>
-
+    <script src="scripts/admin.js"></script>
   </body>
 </html>
