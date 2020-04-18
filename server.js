@@ -10,10 +10,9 @@ const fs = require("fs").promises;
 const fs_sync = require("fs");
 const validUrl = require("valid-url");
 const sqlite = require("sqlite-async");
-const qs = require('querystring');
-const bcrypt = require('bcrypt');
+const qs = require("querystring");
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
-
 
 // Define the private key and certificate for HTTPS
 const security = {
@@ -83,111 +82,98 @@ function handle(request, response) {
   console.log("headers=", request.header);
 
   // request file type validation -> can only be the types defined here
-  if(!url.endsWith(".html") && !url.includes("submit_bank") && !url.includes("login") && !url.includes("remove_bank") && !url.includes("add_admin") && !url.includes("remove_admin") && !url.endsWith(".js") && !url.endsWith(".css") && !url.endsWith(".png") && !url.endsWith(".ico") && !url.endsWith(".jpg") && !url.includes("bank.html?id=") && !url.endsWith("banks") ) return fail(response, BadType, "Bad request type")
+  if (
+    !url.endsWith(".html") &&
+    !url.includes("submit_bank") &&
+    !url.includes("login") &&
+    !url.includes("remove_bank") &&
+    !url.includes("add_admin") &&
+    !url.includes("remove_admin") &&
+    !url.endsWith(".js") &&
+    !url.endsWith(".css") &&
+    !url.endsWith(".png") &&
+    !url.endsWith(".ico") &&
+    !url.endsWith(".jpg") &&
+    !url.includes("bank.html?id=") &&
+    !url.endsWith("banks")
+  )
+    return fail(response, BadType, "Bad request type");
 
   // validtae url requests to prevent filesystem access
-  if (url.includes("/.")||url.includes("//")||url.length>200 ||url.includes("admin.html")) return fail(response, NotFound, "Illegal URL")
-
+  if (
+    url.includes("/.") ||
+    url.includes("//") ||
+    url.length > 200 ||
+    url.includes("admin.html")
+  )
+    return fail(response, NotFound, "Illegal URL");
 
   //call to get the list of banks for the home page
   if (url == "/banks") getList(response);
   // call to get a specific bank's page
   else if (url.startsWith("/bank.html")) getBank(url, response);
-
   else if (url.startsWith("/submit_bank")) submitBank(url, response);
-
-  else if (url.startsWith("/remove_bank")) removeBank(url,response);
-
-  else if (url.startsWith("/add_admin")) addAdmin(request,response);
-
-  else if (url.startsWith("/remove_admin")) removeAdmin(url,response);
-
-    else if (url.startsWith("/login")) login(request,response);
-
-
+  else if (url.startsWith("/remove_bank")) removeBank(url, response);
+  else if (url.startsWith("/add_admin")) addAdmin(request, response);
+  else if (url.startsWith("/remove_admin")) removeAdmin(url, response);
+  else if (url.startsWith("/login")) login(request, response);
   else if (url.startsWith("/search")) getSearch(url, response);
-
   // call for any other url request
   else getFile(url, response);
 }
 
-async function login(request, response){
+async function login(request, response) {
+  var body = "";
 
+  request.on("data", function(data) {
+    body += data;
 
-  var body = '';
-
-  request.on('data', function (data) {
-      body += data;
-
-      // Too much POST data, kill the connection!
-      // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
-      if (body.length > 1e6)
-          request.connection.destroy();
+    // Too much POST data, kill the connection!
+    // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+    if (body.length > 1e6) request.connection.destroy();
   });
 
-  request.on('end', async function () {
-      var post = qs.parse(body);
+  request.on("end", async function() {
+    var post = qs.parse(body);
 
-      var username = post.username;
-      var password = post.password;
+    var username = post.username;
+    var password = post.password;
 
+    var statement =
+      "select password_hash from admins where email = " + "'" + username + "';";
 
-      var statement = "select password_hash from admins where email = " + "'" + username + "';"
+    try {
+      //get row from db, and sent to prepare
+      var hash_password = await db.get(statement);
+      var hash_password = String(JSON.stringify(hash_password));
 
+      var parts = hash_password.split(":");
+      var p = parts[1].replace('"', "");
+      var p = p.replace('"', "");
+      var p = p.replace("}", "");
 
+      console.log(p);
 
-          try {
-            //get row from db, and sent to prepare
-            var hash_password = await db.get(statement);
-            var hash_password = String(JSON.stringify(hash_password));
+      var correct_password = await bcrypt.compare(password, p);
 
-            var parts = hash_password.split(":");
-            var p = parts[1].replace('\"', "");
-            var p = p.replace('\"', "");
-            var p = p.replace('}', "");
+      if (correct_password) {
+        url = "/admin.html";
+        var type = findType(url);
+        var file = root + url;
+        var content = await fs.readFile(file);
 
-
-
-            console.log(p)
-
-            var correct_password = await bcrypt.compare(password, p);
-
-            if (correct_password){
-
-              url = "/admin.html";
-              var type = findType(url);
-              var file = root + url;
-              var content = await fs.readFile(file);
-
-              // pass contents to deliver
-              deliver(response, type, content);
-            }
-
-              else{
-                return fail(response, NotFound, "Wrong Password");
-              }
-
-
-
-
-
-
-
-          } catch (err) {
-            console.log("Error", err.stack);
-            console.log("Error", err.name);
-            console.log("Error", err.message);
-            return fail(response, NotFound, "DB query error");
-          }
-
+        // pass contents to deliver
+        deliver(response, type, content);
+      } else {
+        return fail(response, NotFound, "Wrong Password");
+      }
+    } catch (err) {
+      console.log("Error", err.stack);
+      console.log("Error", err.name);
+      console.log("Error", err.message);
+      return fail(response, NotFound, "DB query error");
+    }
   });
-
-
-
-
-
-
-
 }
 
 // function to get list of banks for homepage.
@@ -246,66 +232,142 @@ async function getBank(url, response) {
 
 // function to submit a bank to the database.
 async function submitBank(url, response) {
-
-
   // get the bank details from the url
   var parts = url.split("=");
-  var id = parts[1].substr(0,parts[1].indexOf("&"));
-  var name = parts[2].substr(0,parts[2].indexOf("&"));
-  var link = parts[3].substr(0,parts[3].indexOf("&"));
-  var facebook = parts[4].substr(0,parts[4].indexOf("&"));
-  var linkedin = parts[5].substr(0,parts[5].indexOf("&"));
-  var description = parts[6].substr(0,parts[6].indexOf("&"));
-  var size = parts[7].substr(0,parts[7].indexOf("&"));
-  var category = parts[8].substr(0,parts[8].indexOf("&"));
-  var competitive = parts[9].substr(0,parts[9].indexOf("&"));
+  var id = parts[1].substr(0, parts[1].indexOf("&"));
+  var name = parts[2].substr(0, parts[2].indexOf("&"));
+  var link = parts[3].substr(0, parts[3].indexOf("&"));
+  var facebook = parts[4].substr(0, parts[4].indexOf("&"));
+  var linkedin = parts[5].substr(0, parts[5].indexOf("&"));
+  var description = parts[6].substr(0, parts[6].indexOf("&"));
+  var size = parts[7].substr(0, parts[7].indexOf("&"));
+  var category = parts[8].substr(0, parts[8].indexOf("&"));
+  var competitive = parts[9].substr(0, parts[9].indexOf("&"));
   var salary = parts[10];
 
-
-
-
   //prepared statement using the id from url
-  var statement = "insert into banks (id, name, link, facebook, linkedin, description, size_employee, category, competitive, y1_salary) values (" + id + ", " + "'" + name + "'" + ", " + "'" + link + "'" + ", " + "'" + facebook + "'" + ", " + "'" + linkedin + "'" + ", " + "'" + description + "'" + ", " + size + ", " + "'" + category + "'" + ", " + competitive + ", " + salary  +")";
+  var statement =
+    "insert into banks (id, name, link, facebook, linkedin, description, size_employee, category, competitive, y1_salary) values (" +
+    id +
+    ", " +
+    "'" +
+    name +
+    "'" +
+    ", " +
+    "'" +
+    link +
+    "'" +
+    ", " +
+    "'" +
+    facebook +
+    "'" +
+    ", " +
+    "'" +
+    linkedin +
+    "'" +
+    ", " +
+    "'" +
+    description +
+    "'" +
+    ", " +
+    size +
+    ", " +
+    "'" +
+    category +
+    "'" +
+    ", " +
+    competitive +
+    ", " +
+    salary +
+    ")";
 
+  try {
+    await db.run(statement);
+    url = "/index.html";
+    var type = findType(url);
+    var file = root + url;
+    var content = await fs.readFile(file);
 
-    try {
-
-      await db.run(statement)
-      url = "/index.html";
-      var type = findType(url);
-      var file = root + url;
-      var content = await fs.readFile(file);
-
-      // pass contents to deliver
-      deliver(response, type, content);
-    }
-
-    catch (err) {
-
+    // pass contents to deliver
+    deliver(response, type, content);
+  } catch (err) {
     console.log("Error", err.stack);
     console.log("Error", err.name);
     console.log("Error", err.message);
 
-      //if theres an error, call fail
-      return fail(response, NotFound, "DB insert bank error");
-
-
-    }
+    //if theres an error, call fail
+    return fail(response, NotFound, "DB insert bank error");
+  }
 }
 
-
 async function removeBank(url, response) {
-
-
   // get the bank details from the url
   var parts = url.split("=");
   var name = parts[1];
 
   //prepared statement using the id from url
-  var statement = "delete from banks where name = " + "'"+name+"'";
+  var statement = "delete from banks where name = " + "'" + name + "'";
+
+  try {
+    await db.run(statement);
+    url = "/index.html";
+    var type = findType(url);
+    var file = root + url;
+    var content = await fs.readFile(file);
+
+    // pass contents to deliver
+    deliver(response, type, content);
+  } catch (err) {
+    console.log("Error", err.stack);
+    console.log("Error", err.name);
+    console.log("Error", err.message);
+
+    //if theres an error, call fail
+    return fail(response, NotFound, "DB delete bank error");
+  }
+}
+
+async function addAdmin(request, response) {
+  var body = "";
+
+  request.on("data", function(data) {
+    body += data;
+
+    // Too much POST data, kill the connection!
+    // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+    if (body.length > 1e6) request.connection.destroy();
+  });
+
+  request.on("end", async function() {
+    var post = qs.parse(body);
+
+    var fname = post.fname;
+    var lname = post.lname;
+    var username = post.username;
+    var password = post.password;
+
+    var hash = await bcrypt.hash(password, saltRounds);
+
+    var statement =
+      "insert into admins values (NULL, " +
+      "'" +
+      fname +
+      "'" +
+      ", " +
+      "'" +
+      lname +
+      "'" +
+      ", " +
+      "'" +
+      username +
+      "'" +
+      ", " +
+      "'" +
+      hash +
+      "'" +
+      ")";
 
     try {
-
       await db.run(statement);
       url = "/index.html";
       var type = findType(url);
@@ -314,115 +376,43 @@ async function removeBank(url, response) {
 
       // pass contents to deliver
       deliver(response, type, content);
-    }
-
-    catch (err) {
-
-    console.log("Error", err.stack);
-    console.log("Error", err.name);
-    console.log("Error", err.message);
+    } catch (err) {
+      console.log("Error", err.stack);
+      console.log("Error", err.name);
+      console.log("Error", err.message);
 
       //if theres an error, call fail
-      return fail(response, NotFound, "DB delete bank error");
-
-
+      return fail(response, NotFound, "DB admin add error");
     }
-}
-
-
-
-
-async function addAdmin(request, response) {
-
-
-  var body = '';
-
-  request.on('data', function (data) {
-      body += data;
-
-      // Too much POST data, kill the connection!
-      // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
-      if (body.length > 1e6)
-          request.connection.destroy();
   });
-
-  request.on('end', async function () {
-      var post = qs.parse(body);
-
-      var fname = post.fname;
-      var lname = post.lname;
-      var username = post.username;
-      var password = post.password;
-
-        var hash = await bcrypt.hash(password,saltRounds);
-
-          var statement = "insert into admins values (NULL, " + "'" + fname + "'" + ", " + "'" + lname + "'" + ", " + "'" + username + "'" + ", " + "'" + hash + "'" +")";
-
-
-          try {
-
-            await db.run(statement)
-            url = "/index.html";
-            var type = findType(url);
-            var file = root + url;
-            var content = await fs.readFile(file);
-
-            // pass contents to deliver
-            deliver(response, type, content);
-          }
-
-          catch (err) {
-
-          console.log("Error", err.stack);
-          console.log("Error", err.name);
-          console.log("Error", err.message);
-
-            //if theres an error, call fail
-            return fail(response, NotFound, "DB admin add error");
-
-
-          }
-  });
-
 }
-
-
 
 async function removeAdmin(url, response) {
-
-
   // get the bank details from the url
   var parts = url.split("=");
   var username = parts[1];
 
   //prepared statement using the id from url
-  var statement = "delete from admins where email = " + "'"+username+"'";
+  var statement = "delete from admins where email = " + "'" + username + "'";
 
-    try {
+  try {
+    await db.run(statement);
+    url = "/index.html";
+    var type = findType(url);
+    var file = root + url;
+    var content = await fs.readFile(file);
 
-      await db.run(statement);
-      url = "/index.html";
-      var type = findType(url);
-      var file = root + url;
-      var content = await fs.readFile(file);
-
-      // pass contents to deliver
-      deliver(response, type, content);
-    }
-
-    catch (err) {
-
+    // pass contents to deliver
+    deliver(response, type, content);
+  } catch (err) {
     console.log("Error", err.stack);
     console.log("Error", err.name);
     console.log("Error", err.message);
 
-      //if theres an error, call fail
-      return fail(response, NotFound, "DB delete admin error");
-
-
-    }
+    //if theres an error, call fail
+    return fail(response, NotFound, "DB delete admin error");
+  }
 }
-
 
 // function to prepare the bank template with the gathered db info for that bank
 function prepare(text, data, response) {

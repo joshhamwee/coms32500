@@ -1,0 +1,67 @@
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.is-paddingless-vertical {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.is-padding-logo {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+@media only screen and (min-width: 768px) {
+  .is-padding-table {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .is-padding-table {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+.tab-content {
+  display: none;
+}
+.tab-content.is-active {
+  display: block;
+}
+
+.is-paddingless-horizontal {
+  padding-left: 0;
+  padding-right: 0;
+}
+.is-paddingless {
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: [xl-start] 1fr 1.5rem [md-start] minmax(0, 600px) [md-end]1.5rem 1fr [xl-end];
+}
+.grid * {
+  grid-column: md;
+}
+.grid-xl {
+  grid-column: xl;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.is-not-repeating {
+  background-size: cover;
+}
