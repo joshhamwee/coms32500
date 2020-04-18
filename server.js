@@ -100,7 +100,7 @@ function handle(request, response) {
   )
     return fail(response, BadType, "Bad request type");
 
-  // validtae url requests to prevent filesystem access
+  // validtae url requests to prevent filesystem access and to prevent admin page access
   if (
     url.includes("/.") ||
     url.includes("//") ||
@@ -109,9 +109,9 @@ function handle(request, response) {
   )
     return fail(response, NotFound, "Illegal URL");
 
-  //call to get the list of banks for the home page
+
+  // callls to go to specific function
   if (url == "/banks") getList(response);
-  // call to get a specific bank's page
   else if (url.startsWith("/bank.html")) getBank(url, response);
   else if (url.startsWith("/submit_bank")) submitBank(url, response);
   else if (url.startsWith("/remove_bank")) removeBank(url, response);
@@ -119,21 +119,21 @@ function handle(request, response) {
   else if (url.startsWith("/remove_admin")) removeAdmin(url, response);
   else if (url.startsWith("/login")) login(request, response);
   else if (url.startsWith("/search")) getSearch(url, response);
-  // call for any other url request
   else getFile(url, response);
 }
 
 async function login(request, response) {
+
+  //extracts information from POST
   var body = "";
 
   request.on("data", function(data) {
     body += data;
 
-    // Too much POST data, kill the connection!
-    // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
     if (body.length > 1e6) request.connection.destroy();
   });
 
+  // once all info is extracted, proceed to checking password against hash
   request.on("end", async function() {
     var post = qs.parse(body);
 
@@ -144,7 +144,6 @@ async function login(request, response) {
       "select password_hash from admins where email = " + "'" + username + "';";
 
     try {
-      //get row from db, and sent to prepare
       var hash_password = await db.get(statement);
       var hash_password = String(JSON.stringify(hash_password));
 
@@ -152,8 +151,6 @@ async function login(request, response) {
       var p = parts[1].replace('"', "");
       var p = p.replace('"', "");
       var p = p.replace("}", "");
-
-      console.log(p);
 
       var correct_password = await bcrypt.compare(password, p);
 
@@ -163,12 +160,16 @@ async function login(request, response) {
         var file = root + url;
         var content = await fs.readFile(file);
 
-        // pass contents to deliver
         deliver(response, type, content);
-      } else {
+      }
+
+      else {
         return fail(response, NotFound, "Wrong Password");
       }
-    } catch (err) {
+
+      }
+
+      catch (err) {
       console.log("Error", err.stack);
       console.log("Error", err.name);
       console.log("Error", err.message);
@@ -176,6 +177,7 @@ async function login(request, response) {
     }
   });
 }
+
 
 // function to get list of banks for homepage.
 async function getList(response) {
