@@ -105,7 +105,7 @@ function handle(request, response) {
     url.includes("/.") ||
     url.includes("//") ||
     url.length > 200 ||
-    url.includes("admin.html")
+   url.includes("admin.html")
   )
     return fail(response, NotFound, "Illegal URL");
 
