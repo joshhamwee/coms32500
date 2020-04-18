@@ -485,10 +485,16 @@ function deliver(response, type, content) {
 }
 
 // Give a minimal failure response to the browser
-function fail(response, code, text) {
-  var textTypeHeader = { "Content-Type": "text/plain" };
+async function fail(response, code, text) {
+
+  url = "/error.html";
+  var type = findType(url);
+  var file = root + url;
+  var content = await fs.readFile(file);
+
+  var textTypeHeader = { "Content-Type": type };
   response.writeHead(code, textTypeHeader);
-  response.write(text, "utf8");
+  response.write(content);
   response.end();
 }
 
