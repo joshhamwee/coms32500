@@ -52,6 +52,7 @@
         <li class="is-active"><a>Add Bank</a></li>
         <li><a>Remove Bank</a></li>
         <li><a>Add Admin</a></li>
+        <li><a>Remove Admin</a></li>
       </ul>
     </div>
 
@@ -300,6 +301,37 @@
                   </span>
                 </div>
               </div>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-link" id="submit" value="Submit">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+      <div class="tab-content">
+        <section class="section grid">
+          <div class="content notification center">
+            <form action="/remove_admin">
+              <div class="field">
+                <label for="username" class="label">Username: </label>
+                <div class="control has-icons-left">
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="input"
+                    required
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-trash"></i>
+                  </span>
+                </div>
+              </div>
+
               <div class="field is-grouped">
                 <div class="control">
                   <button class="button is-link" id="submit" value="Submit">

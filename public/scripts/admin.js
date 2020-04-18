@@ -8,7 +8,7 @@ document.querySelectorAll(".tabs").forEach(function (elem) {
     elem2.addEventListener("click", function () {
       curIndex = getNodeindex(elem2);
 
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < 4; i++) {
         tabs[i].classList.remove("is-active");
         contentsList[i].classList.remove("is-active");
       }
