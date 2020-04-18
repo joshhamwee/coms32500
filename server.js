@@ -95,7 +95,8 @@ function handle(request, response) {
     !url.endsWith(".ico") &&
     !url.endsWith(".jpg") &&
     !url.includes("bank.html?id=") &&
-    !url.endsWith("banks")
+    !url.endsWith("banks") &&
+    !url.startsWith("/search")
   )
     return fail(response, BadType, "Bad request type");
 
@@ -197,6 +198,7 @@ async function getSearch(url, response) {
   try {
     //get row from db, and sent to prepare
     var list = await db.all(statement);
+    console.log("HERE");
     console.log(list);
 
     var text = JSON.stringify(list);
@@ -394,7 +396,6 @@ async function removeAdmin(url, response) {
 
   //prepared statement using the id from url
   var statement = "delete from admins where email = " + "'" + username + "'";
-
   try {
     await db.run(statement);
     url = "/index.html";
